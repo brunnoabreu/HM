@@ -39,7 +39,6 @@
 #include "TLibCommon/TComRom.h"
 #include "TLibCommon/TComMotionInfo.h"
 #include "TEncSearch.h"
-#include "TLibCommon/TComLab215.h"
 #include <math.h>
 
 //! \ingroup TLibEncoder
@@ -4124,11 +4123,6 @@ Void TEncSearch::xPatternSearchFast( TComDataCU* pcCU, TComPattern* pcPatternKey
 
 Void TEncSearch::xTZSearch( TComDataCU* pcCU, TComPattern* pcPatternKey, Pel* piRefY, Int iRefStride, TComMv* pcMvSrchRngLT, TComMv* pcMvSrchRngRB, TComMv& rcMv, UInt& ruiSAD )
 {
-
-#if EN_LAB215
-    TComLab215::incCounter(1);
-#endif
-    
   Int   iSrchRngHorLeft   = pcMvSrchRngLT->getHor();
   Int   iSrchRngHorRight  = pcMvSrchRngRB->getHor();
   Int   iSrchRngVerTop    = pcMvSrchRngLT->getVer();

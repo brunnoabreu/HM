@@ -44,7 +44,6 @@
 
 #include "TAppEncTop.h"
 #include "TLibEncoder/AnnexBwrite.h"
-#include "TLibCommon/TComLab215.h"
 
 using namespace std;
 
@@ -394,10 +393,6 @@ Void TAppEncTop::encode()
     pcPicYuvOrg->create( m_iSourceWidth, m_iSourceHeight, m_uiMaxCUWidth, m_uiMaxCUHeight, m_uiMaxCUDepth );
   }
   
-#if EN_LAB215
-    TComLab215::init();
-#endif
-    
   while ( !bEos )
   {
     // get buffers
@@ -437,11 +432,6 @@ Void TAppEncTop::encode()
       outputAccessUnits.clear();
     }
   }
-    
-    
-#if EN_LAB215
-    TComLab215::report();
-#endif
 
   m_cTEncTop.printSummary(m_isField);
 

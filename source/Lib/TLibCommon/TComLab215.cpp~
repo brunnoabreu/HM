@@ -1,0 +1,22 @@
+
+#include <vector>
+#include <cstdlib>
+#include <fstream>
+#include <cstdio>
+
+
+#include "TComLab215.h"
+using namespace std;
+
+
+
+
+TComCycleMonitor::TComCycleMonitor() {
+
+}
+
+
+void TComCycleMonitor::init(){
+
+}
+
