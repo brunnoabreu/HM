@@ -21,11 +21,12 @@ using namespace std;
 class TComLab215 {
 public:
     static double counter;
+    static int TZConfig;
     TComLab215();
     static void init();
     static void report();
     static void incCounter(int n);
-
+    static void setTZConfig(int n);
 };
 
 #endif	/* TCOMLAB215_H */

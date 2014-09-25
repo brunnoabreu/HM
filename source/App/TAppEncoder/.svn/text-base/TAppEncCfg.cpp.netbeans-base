@@ -48,7 +48,6 @@ static istream& operator>>(istream &, Profile::Name &);
 
 #include "TAppCommon/program_options_lite.h"
 #include "TLibEncoder/TEncRateCtrl.h"
-#include "TLibCommon/TComLab215.h"
 #ifdef WIN32
 #define strdup _strdup
 #endif
@@ -324,8 +323,6 @@ Bool TAppEncCfg::parseCfg( Int argc, Char* argv[] )
   // motion options
   ("FastSearch",              m_iFastSearch,                1, "0:Full search  1:Diamond  2:PMVFAST")
   ("SearchRange,-sr",         m_iSearchRange,              96, "Motion search range")
-  ("TZSearchConfig,tz",         TComLab215::TZConfig,              0, "TZSearch Parameters")
-
   ("BipredSearchRange",       m_bipredSearchRange,          4, "Motion search range for bipred refinement")
   ("HadamardME",              m_bUseHADME,               true, "Hadamard ME for fractional-pel")
   ("ASR",                     m_bUseASR,                false, "Adaptive motion search range")

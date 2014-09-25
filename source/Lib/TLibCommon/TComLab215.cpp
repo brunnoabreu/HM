@@ -9,6 +9,7 @@
 using namespace std;
 
 double TComLab215::counter;
+int TComLab215::TZConfig;
 
 
 TComLab215::TComLab215() {
@@ -25,6 +26,10 @@ void TComLab215::incCounter(int n){
 }
 
 void TComLab215::report(){
-    cout << counter << endl;
+    cout << counter << " kcycles" << endl;
     init();
+}
+
+void TComLab215::setTZConfig(int n){
+    TZConfig = n;
 }

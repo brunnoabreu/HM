@@ -41,6 +41,7 @@
 #include "TEncSearch.h"
 #include "TLibCommon/TComLab215.h"
 #include <math.h>
+#include "TZSearchConfig.h"
 
 //! \ingroup TLibEncoder
 //! \{
@@ -289,23 +290,7 @@ void TEncSearch::init(TEncCfg*      pcEncCfg,
 #define FIRSTSEARCHSTOP     0
 #endif
 
-#define TZ_SEARCH_CONFIGURATION                                                                                 \
-const Int  iRaster                  = 5;  /* TZ soll von aussen ?ergeben werden */                            \
-const Bool bTestOtherPredictedMV    = 0;                                                                      \
-const Bool bTestZeroVector          = 1;                                                                      \
-const Bool bTestZeroVectorStart     = 0;                                                                      \
-const Bool bTestZeroVectorStop      = 0;                                                                      \
-const Bool bFirstSearchDiamond      = 1;  /* 1 = xTZ8PointDiamondSearch   0 = xTZ8PointSquareSearch */        \
-const Bool bFirstSearchStop         = FIRSTSEARCHSTOP;                                                        \
-const UInt uiFirstSearchRounds      = 3;  /* first search stop X rounds after best match (must be >=1) */     \
-const Bool bEnableRasterSearch      = 1;                                                                      \
-const Bool bAlwaysRasterSearch      = 0;  /* ===== 1: BETTER but factor 2 slower ===== */                     \
-const Bool bRasterRefinementEnable  = 0;  /* enable either raster refinement or star refinement */            \
-const Bool bRasterRefinementDiamond = 0;  /* 1 = xTZ8PointDiamondSearch   0 = xTZ8PointSquareSearch */        \
-const Bool bStarRefinementEnable    = 1;  /* enable either star refinement or raster refinement */            \
-const Bool bStarRefinementDiamond   = 1;  /* 1 = xTZ8PointDiamondSearch   0 = xTZ8PointSquareSearch */        \
-const Bool bStarRefinementStop      = 0;                                                                      \
-const UInt uiStarRefinementRounds   = 2;  /* star refinement stop X rounds after best match (must be >=1) */  \
+
 
 
 __inline Void TEncSearch::xTZSearchHelp( TComPattern* pcPatternKey, IntTZSearchStruct& rcStruct, const Int iSearchX, const Int iSearchY, const UChar ucPointNr, const UInt uiDistance )
@@ -4149,7 +4134,7 @@ Void TEncSearch::xTZSearch( TComDataCU* pcCU, TComPattern* pcPatternKey, Pel* pi
   xTZSearchHelp( pcPatternKey, cStruct, rcMv.getHor(), rcMv.getVer(), 0, 0 );
   
   // test whether one of PRED_A, PRED_B, PRED_C MV is better start point than Median predictor
-  if ( bTestOtherPredictedMV )
+  if ( bTestOtherPredictedMV[TComLab215::TZConfig] )
   {
     for ( UInt index = 0; index < 3; index++ )
     {
@@ -4161,7 +4146,7 @@ Void TEncSearch::xTZSearch( TComDataCU* pcCU, TComPattern* pcPatternKey, Pel* pi
   }
   
   // test whether zero Mv is better start point than Median predictor
-  if ( bTestZeroVector )
+  if ( bTestZeroVector[TComLab215::TZConfig] )
   {
     xTZSearchHelp( pcPatternKey, cStruct, 0, 0, 0, 0 );
   }
@@ -4174,7 +4159,7 @@ Void TEncSearch::xTZSearch( TComDataCU* pcCU, TComPattern* pcPatternKey, Pel* pi
   // first search
   for ( iDist = 1; iDist <= (Int)uiSearchRange; iDist*=2 )
   {
-    if ( bFirstSearchDiamond == 1 )
+    if ( bFirstSearchDiamond[TComLab215::TZConfig] == 1 )
     {
       xTZ8PointDiamondSearch ( pcPatternKey, cStruct, pcMvSrchRngLT, pcMvSrchRngRB, iStartX, iStartY, iDist );
     }
@@ -4183,14 +4168,14 @@ Void TEncSearch::xTZSearch( TComDataCU* pcCU, TComPattern* pcPatternKey, Pel* pi
       xTZ8PointSquareSearch  ( pcPatternKey, cStruct, pcMvSrchRngLT, pcMvSrchRngRB, iStartX, iStartY, iDist );
     }
     
-    if ( bFirstSearchStop && ( cStruct.uiBestRound >= uiFirstSearchRounds ) ) // stop criterion
+    if ( bFirstSearchStop[TComLab215::TZConfig] && ( cStruct.uiBestRound >= uiFirstSearchRounds[TComLab215::TZConfig] ) ) // stop criterion
     {
       break;
     }
   }
   
   // test whether zero Mv is a better start point than Median predictor
-  if ( bTestZeroVectorStart && ((cStruct.iBestX != 0) || (cStruct.iBestY != 0)) )
+  if ( bTestZeroVectorStart[TComLab215::TZConfig] && ((cStruct.iBestX != 0) || (cStruct.iBestY != 0)) )
   {
     xTZSearchHelp( pcPatternKey, cStruct, 0, 0, 0, 0 );
     if ( (cStruct.iBestX == 0) && (cStruct.iBestY == 0) )
@@ -4199,7 +4184,7 @@ Void TEncSearch::xTZSearch( TComDataCU* pcCU, TComPattern* pcPatternKey, Pel* pi
       for ( iDist = 1; iDist <= (Int)uiSearchRange; iDist*=2 )
       {
         xTZ8PointDiamondSearch( pcPatternKey, cStruct, pcMvSrchRngLT, pcMvSrchRngRB, 0, 0, iDist );
-        if ( bTestZeroVectorStop && (cStruct.uiBestRound > 0) ) // stop criterion
+        if ( bTestZeroVectorStop[TComLab215::TZConfig] && (cStruct.uiBestRound > 0) ) // stop criterion
         {
           break;
         }
@@ -4215,20 +4200,20 @@ Void TEncSearch::xTZSearch( TComDataCU* pcCU, TComPattern* pcPatternKey, Pel* pi
   }
   
   // raster search if distance is too big
-  if ( bEnableRasterSearch && ( ((Int)(cStruct.uiBestDistance) > iRaster) || bAlwaysRasterSearch ) )
+  if ( bEnableRasterSearch[TComLab215::TZConfig] && ( ((Int)(cStruct.uiBestDistance) > iRaster[TComLab215::TZConfig]) || bAlwaysRasterSearch[TComLab215::TZConfig] ) )
   {
-    cStruct.uiBestDistance = iRaster;
-    for ( iStartY = iSrchRngVerTop; iStartY <= iSrchRngVerBottom; iStartY += iRaster )
+    cStruct.uiBestDistance = iRaster[TComLab215::TZConfig];
+    for ( iStartY = iSrchRngVerTop; iStartY <= iSrchRngVerBottom; iStartY += iRaster[TComLab215::TZConfig] )
     {
-      for ( iStartX = iSrchRngHorLeft; iStartX <= iSrchRngHorRight; iStartX += iRaster )
+      for ( iStartX = iSrchRngHorLeft; iStartX <= iSrchRngHorRight; iStartX += iRaster[TComLab215::TZConfig] )
       {
-        xTZSearchHelp( pcPatternKey, cStruct, iStartX, iStartY, 0, iRaster );
+        xTZSearchHelp( pcPatternKey, cStruct, iStartX, iStartY, 0, iRaster[TComLab215::TZConfig] );
       }
     }
   }
   
   // raster refinement
-  if ( bRasterRefinementEnable && cStruct.uiBestDistance > 0 )
+  if ( bRasterRefinementEnable[TComLab215::TZConfig] && cStruct.uiBestDistance > 0 )
   {
     while ( cStruct.uiBestDistance > 0 )
     {
@@ -4237,7 +4222,7 @@ Void TEncSearch::xTZSearch( TComDataCU* pcCU, TComPattern* pcPatternKey, Pel* pi
       if ( cStruct.uiBestDistance > 1 )
       {
         iDist = cStruct.uiBestDistance >>= 1;
-        if ( bRasterRefinementDiamond == 1 )
+        if ( bRasterRefinementDiamond[TComLab215::TZConfig] == 1 )
         {
           xTZ8PointDiamondSearch ( pcPatternKey, cStruct, pcMvSrchRngLT, pcMvSrchRngRB, iStartX, iStartY, iDist );
         }
@@ -4260,7 +4245,7 @@ Void TEncSearch::xTZSearch( TComDataCU* pcCU, TComPattern* pcPatternKey, Pel* pi
   }
   
   // start refinement
-  if ( bStarRefinementEnable && cStruct.uiBestDistance > 0 )
+  if ( bStarRefinementEnable[TComLab215::TZConfig] && cStruct.uiBestDistance > 0 )
   {
     while ( cStruct.uiBestDistance > 0 )
     {
@@ -4270,7 +4255,7 @@ Void TEncSearch::xTZSearch( TComDataCU* pcCU, TComPattern* pcPatternKey, Pel* pi
       cStruct.ucPointNr = 0;
       for ( iDist = 1; iDist < (Int)uiSearchRange + 1; iDist*=2 )
       {
-        if ( bStarRefinementDiamond == 1 )
+        if ( bStarRefinementDiamond[TComLab215::TZConfig] == 1 )
         {
           xTZ8PointDiamondSearch ( pcPatternKey, cStruct, pcMvSrchRngLT, pcMvSrchRngRB, iStartX, iStartY, iDist );
         }
@@ -4278,7 +4263,7 @@ Void TEncSearch::xTZSearch( TComDataCU* pcCU, TComPattern* pcPatternKey, Pel* pi
         {
           xTZ8PointSquareSearch  ( pcPatternKey, cStruct, pcMvSrchRngLT, pcMvSrchRngRB, iStartX, iStartY, iDist );
         }
-        if ( bStarRefinementStop && (cStruct.uiBestRound >= uiStarRefinementRounds) ) // stop criterion
+        if ( bStarRefinementStop[TComLab215::TZConfig] && (cStruct.uiBestRound >= uiStarRefinementRounds[TComLab215::TZConfig]) ) // stop criterion
         {
           break;
         }

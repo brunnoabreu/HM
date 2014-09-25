@@ -20,7 +20,8 @@ objects/TAppEncCfg.r.o: \
  /home/brunno/hm-brunno/build/linux/app/TAppEncoder/../../../../source/Lib/TLibEncoder/../TLibCommon/TComRdCost.h \
  /home/brunno/hm-brunno/build/linux/app/TAppEncoder/../../../../source/Lib/TLibEncoder/../TLibCommon/TComPattern.h \
  /home/brunno/hm-brunno/build/linux/app/TAppEncoder/../../../../source/Lib/TLibEncoder/../TLibCommon/TComRdCostWeightPrediction.h \
- /home/brunno/hm-brunno/build/linux/app/TAppEncoder/../../../../source/Lib/TLibEncoder/../TLibEncoder/TEncCfg.h
+ /home/brunno/hm-brunno/build/linux/app/TAppEncoder/../../../../source/Lib/TLibEncoder/../TLibEncoder/TEncCfg.h \
+ /home/brunno/hm-brunno/build/linux/app/TAppEncoder/../../../../source/Lib/TLibCommon/TComLab215.h
  /home/brunno/hm-brunno/build/linux/app/TAppEncoder/../../../../source/App/TAppEncoder/TAppEncCfg.cpp :
  /home/brunno/hm-brunno/build/linux/app/TAppEncoder/../../../../source/Lib/TLibCommon/TComRom.h :
  /home/brunno/hm-brunno/build/linux/app/TAppEncoder/../../../../source/Lib/TLibCommon/CommonDef.h :
@@ -43,3 +44,4 @@ objects/TAppEncCfg.r.o: \
  /home/brunno/hm-brunno/build/linux/app/TAppEncoder/../../../../source/Lib/TLibEncoder/../TLibCommon/TComPattern.h :
  /home/brunno/hm-brunno/build/linux/app/TAppEncoder/../../../../source/Lib/TLibEncoder/../TLibCommon/TComRdCostWeightPrediction.h :
  /home/brunno/hm-brunno/build/linux/app/TAppEncoder/../../../../source/Lib/TLibEncoder/../TLibEncoder/TEncCfg.h :
+ /home/brunno/hm-brunno/build/linux/app/TAppEncoder/../../../../source/Lib/TLibCommon/TComLab215.h :
