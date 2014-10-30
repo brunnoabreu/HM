@@ -1444,6 +1444,9 @@ Void TAppEncCfg::xPrintParameter()
     printf("Frame/Field                  : Frame based coding\n");
     printf("Frame index                  : %u - %d (%d frames)\n", m_FrameSkip, m_FrameSkip+m_framesToBeEncoded-1, m_framesToBeEncoded );
   }
+#if EN_LAB215
+    printf("TZS Configuration            : %d\n", TComLab215::TZConfig );
+#endif
   printf("CU size / depth              : %d / %d\n", m_uiMaxCUWidth, m_uiMaxCUDepth );
   printf("RQT trans. size (min / max)  : %d / %d\n", 1 << m_uiQuadtreeTULog2MinSize, 1 << m_uiQuadtreeTULog2MaxSize );
   printf("Max RQT depth inter          : %d\n", m_uiQuadtreeTUMaxDepthInter);
